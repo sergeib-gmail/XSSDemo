@@ -1,0 +1,9 @@
+api: 
+  url: https://apptwo.contrastsecurity.com/Contrast
+  api_key: 2R4Am1HCj7qUVxHeg6jAE2sX6Y2DI7Qe
+  service_key: 9TIYTAZHREUMOQCA
+  user_name: agent_d11e2d00-6159-4b25-a591-e0da86a5ab7b@ShraddhasOrg
+application:
+  name: Sample
+server:
+  environment: PRODUCTION
