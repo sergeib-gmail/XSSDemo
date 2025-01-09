@@ -27,12 +27,11 @@ steps:
     goals: 'package'
 
 - task: CopyFiles@2
-  displayName: 'Copy JAR and Contrast Agent'
+  displayName: 'Copy Contrast Agent'
   inputs:
-    SourceFolder: '$(system.defaultworkingdirectory)'
+    SourceFolder: '$(system.defaultworkingdirectory)/contrast'
     Contents: |
-      **/target/*.jar
-      **/contrast/contrast.jar
+      contrast.jar
     TargetFolder: '$(build.artifactstagingdirectory)'
     flattenFolders: true
 
@@ -40,16 +39,14 @@ steps:
   displayName: 'Build Docker Image'
   inputs:
     command: build
-    # repository: your-docker-repo/your-image-name # Remove repository as we won't push
-    dockerfile: '**/Dockerfile' # Assuming your Dockerfile is in the root; adjust if needed
+    dockerfile: '**/Dockerfile'
     buildContext: '$(system.defaultworkingdirectory)'
     tags: |
       $(Build.BuildId)
     arguments: |
       --build-arg JAR_FILE=$(build.artifactstagingdirectory)/*.jar
       --build-arg CONTRAST_FILE=$(build.artifactstagingdirectory)/contrast.jar
-    # containerRegistry: your-docker-registry-service-connection # Remove registry details
-
+    
 - script: |
     # Run the Docker container in detached mode
     docker run -d --name $(containerName) -p 8080:8080 $(Build.BuildId)
@@ -59,7 +56,7 @@ steps:
 
     # Wait for the application to start (adjust sleep time if needed)
     echo "Waiting for application to start..."
-    sleep 30 
+    sleep 30
 
     # Send a request using curl
     response=$(docker exec $(containerName) curl http://localhost:8080/?name=Shraddha)
