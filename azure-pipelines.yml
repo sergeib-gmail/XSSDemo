@@ -32,7 +32,7 @@ steps:
   inputs:
     SourceFolder: '$(system.defaultworkingdirectory)'
     Contents: |
-      **/target/*.jar
+      **/target/demo-0.0.1-SNAPSHOT.jar
       **/contrast/contrast.jar
     TargetFolder: '$(build.artifactstagingdirectory)'
     flattenFolders: true
@@ -47,5 +47,5 @@ steps:
     tags: |
       $(Build.BuildId)
     arguments: |
-      --build-arg JAR_FILE=$(build.artifactstagingdirectory)/*.jar  
+      --build-arg JAR_FILE=$(build.artifactstagingdirectory)/demo-0.0.1-SNAPSHOT.jar  
       --build-arg CONTRAST_FILE=$(build.artifactstagingdirectory)/contrast/contrast.jar  
