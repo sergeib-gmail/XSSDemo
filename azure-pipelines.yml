@@ -33,7 +33,7 @@ steps:
     SourceFolder: '$(system.defaultworkingdirectory)'
     Contents: |
       **/target/demo-0.0.1-SNAPSHOT.jar
-    TargetFolder: '$(build.artifactstagingdirectory)'
+    TargetFolder: '$(build.artifactstagingdirectory)/target'
     flattenFolders: true
 
 - task: Docker@2
@@ -46,4 +46,4 @@ steps:
     tags: |
       $(Build.BuildId)
     arguments: |
-      --build-arg JAR_FILE=$(build.artifactstagingdirectory)/demo-0.0.1-SNAPSHOT.jar  
+      --build-arg JAR_FILE=target/demo-0.0.1-SNAPSHOT.jar  
