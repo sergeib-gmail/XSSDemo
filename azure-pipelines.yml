@@ -64,11 +64,8 @@ steps:
     script: |
         # Build the Docker image with context set to the project directory
         docker build -t my-springboot-app:latest $(System.DefaultWorkingDirectory) 
-        docker images 
         docker run -d -p 8080:8080 --name SpringBoot my-springboot-app:latest
-        while ! docker exec SpringBoot curl -s http://localhost:8080/actuator/health | grep -q '"status":"UP"'; do 
-        sleep 5
-        done
-
+        docker exec SpringBoot apk add --no-cache curl
+        sleep 30
         # Execute the script inside the container
-        docker exec SpringBoot sh -c 'apk add --no-cache curl && curl http://localhost:8080/?name=Shraddha' 
+        docker exec SpringBoot curl http://localhost:8080/?name=Shraddha' 
