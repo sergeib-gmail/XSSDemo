@@ -36,6 +36,15 @@ steps:
     TargetFolder: '$(build.artifactstagingdirectory)/target'
     flattenFolders: true
 
+- task: CopyFiles@2
+  displayName: 'Copy Contrast'
+  inputs:
+    SourceFolder: '$(system.defaultworkingdirectory)'
+    Contents: |
+      **/contrast/contrast.jar
+    TargetFolder: '$(build.artifactstagingdirectory)/contrast'
+    flattenFolders: true
+
 - task: Docker@2
   displayName: 'Build Docker Image'
   inputs:
@@ -47,3 +56,4 @@ steps:
       $(Build.BuildId)
     arguments: |
       --build-arg JAR_FILE=target/demo-0.0.1-SNAPSHOT.jar  
+      --build-arg CONTRAST_FILE=contrast/contrast.jar  
