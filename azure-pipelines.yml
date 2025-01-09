@@ -68,4 +68,4 @@ steps:
         docker exec SpringBoot apk add --no-cache curl
         sleep 30
         # Execute the script inside the container
-        docker exec SpringBoot curl http://localhost:8080/?name=Shraddha' 
+        docker exec SpringBoot curl http://localhost:8080/?name=Shraddha
