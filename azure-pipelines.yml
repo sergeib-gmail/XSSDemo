@@ -26,3 +26,25 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
+    
+- task: CopyFiles@2
+  displayName: 'Copy JAR and Contrast Agent'
+  inputs:
+    SourceFolder: '$(system.defaultworkingdirectory)'
+    Contents: |
+      **/target/*.jar
+      **/contrast/contrast.jar
+    TargetFolder: '$(build.artifactstagingdirectory)'
+    flattenFolders: true
+
+- task: Docker@2
+  displayName: 'Build Docker Image'
+  inputs:
+    command: build
+    # repository: your-docker-repo/your-image-name # Remove repository as we won't push
+    dockerfile: '**/Dockerfile' # Assuming your Dockerfile is in the root; adjust if needed
+    buildContext: '$(system.defaultworkingdirectory)'
+    tags: |
+      $(Build.BuildId)
+    arguments: |
+      --build-arg JAR_FILE=$(build.artifactstagingdirectory)/*.jar    
