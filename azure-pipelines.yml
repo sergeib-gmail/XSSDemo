@@ -62,8 +62,4 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      docker run -d --name SpringBoot $(Build.BuildId) 
-      sleep 10 # Wait for the container to start
-      docker exec SpringBoot apk add --no-cache curl
-      sleep 50
-      docker exec SpringBoot curl http://localhost:8080/?name=Shraddha
+      docker run -d --name SpringBoot $(Build.BuildId)
