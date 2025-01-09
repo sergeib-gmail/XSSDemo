@@ -62,4 +62,5 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-       docker run -d -p 8080:8080 --name SpringBoot my-springboot-app:latest
+        # Build the Docker image with context set to the project directory
+        docker build -t my-springboot-app:latest $(System.DefaultWorkingDirectory) 
