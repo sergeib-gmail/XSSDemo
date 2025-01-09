@@ -47,4 +47,5 @@ steps:
     tags: |
       $(Build.BuildId)
     arguments: |
-      --build-arg JAR_FILE=$(build.artifactstagingdirectory)/*.jar    
+      --build-arg JAR_FILE=$(build.artifactstagingdirectory)/*.jar  
+      --build-arg CONTRAST_FILE=$(build.artifactstagingdirectory)/contrast/contrast.jar  
