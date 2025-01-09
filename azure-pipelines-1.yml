@@ -27,11 +27,11 @@ steps:
     goals: 'package'
 
 - task: CopyFiles@2
-  displayName: 'Copy Contrast Agent'
+  displayName: 'Copy JAR'
   inputs:
-    SourceFolder: '$(system.defaultworkingdirectory)/contrast'
+    SourceFolder: '$(system.defaultworkingdirectory)'
     Contents: |
-      contrast.jar
+      **/target/*.jar
     TargetFolder: '$(build.artifactstagingdirectory)'
     flattenFolders: true
 
@@ -39,14 +39,14 @@ steps:
   displayName: 'Build Docker Image'
   inputs:
     command: build
-    dockerfile: '**/Dockerfile'
+    dockerfile: '$(system.defaultworkingdirectory)/Dockerfile'
     buildContext: '$(system.defaultworkingdirectory)'
     tags: |
       $(Build.BuildId)
     arguments: |
       --build-arg JAR_FILE=$(build.artifactstagingdirectory)/*.jar
-      --build-arg CONTRAST_FILE=$(build.artifactstagingdirectory)/contrast.jar
-    
+      --build-arg CONTRAST_FILE=contrast/contrast.jar
+
 - script: |
     # Run the Docker container in detached mode
     docker run -d --name $(containerName) -p 8080:8080 $(Build.BuildId)
