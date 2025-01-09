@@ -1,0 +1,67 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  buildConfiguration: 'Release'
+  containerName: 'SpringBoot'
+
+steps:
+- task: JavaToolInstaller@0
+  inputs:
+    versionSpec: '8'
+    jdkArchitectureOption: 'x64'
+    jdkSourceOption: 'PreInstalled'
+
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    mavenOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    goals: 'package'
+
+- task: CopyFiles@2
+  displayName: 'Copy JAR'
+  inputs:
+    SourceFolder: '$(system.defaultworkingdirectory)'
+    Contents: |
+      **/target/*.jar
+    TargetFolder: '$(build.artifactstagingdirectory)'
+    flattenFolders: true
+
+- task: Docker@2
+  displayName: 'Build Docker Image'
+  inputs:
+    command: build
+    dockerfile: '$(system.defaultworkingdirectory)/Dockerfile'
+    buildContext: '$(system.defaultworkingdirectory)'
+    tags: |
+      $(Build.BuildId)
+    arguments: |
+      --build-arg JAR_FILE=$(build.artifactstagingdirectory)/*.jar
+      --build-arg CONTRAST_FILE=contrast/contrast.jar
+
+- script: |
+    # Run the Docker container in detached mode
+    docker run -d --name $(containerName) -p 8080:8080 $(Build.BuildId)
+
+    # Install curl inside the container (alpine-based image)
+    docker exec $(containerName) apk add --no-cache curl
+
+    # Wait for the application to start (adjust sleep time if needed)
+    echo "Waiting for application to start..."
+    sleep 30
+
+    # Send a request using curl
+    response=$(docker exec $(containerName) curl http://localhost:8080/?name=Shraddha)
+
+    # Print the response (optional)
+    echo "Response from application:"
+    echo $response
+  displayName: 'Run Docker Container and Test'
