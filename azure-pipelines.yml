@@ -73,3 +73,19 @@ stages:
             sleep 30
             # Execute the script inside the container
             docker exec SpringBoot curl http://localhost:8080/?name=Shraddha  
+
+- stage: Verify
+  jobs:
+  - job: Verify
+    pool: server
+    steps: 
+    - task: ContrastIntegration@2
+      inputs:
+        ContrastService: 'shraddha-apptwo'
+        Application: '105820b9-7ee1-4094-85f2-d501bba89253'
+        StatusFilter: 'Reported, Suspicious, Confirmed, NotAProblem, Remediated, AutoRemediated, Fixed'
+        CriticalLimit: '1'
+        HighLimit: '1'
+        MediumLimit: '1'
+        LowLimit: '0'
+        NoteLimit: '0'
