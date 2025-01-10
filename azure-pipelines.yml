@@ -9,63 +9,67 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- task: JavaToolInstaller@0
-  inputs:
-    versionSpec: '8'
-    jdkArchitectureOption: 'x64'
-    jdkSourceOption: 'PreInstalled'
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    steps:
+    - task: JavaToolInstaller@0
+      inputs:
+        versionSpec: '8'
+        jdkArchitectureOption: 'x64'
+        jdkSourceOption: 'PreInstalled'
 
-- task: Maven@3
-  inputs:
-    mavenPomFile: 'pom.xml'
-    mavenOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'package'
+    - task: Maven@3
+      inputs:
+        mavenPomFile: 'pom.xml'
+        mavenOptions: '-Xmx3072m'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.8'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: true
+        testResultsFiles: '**/surefire-reports/TEST-*.xml'
+        goals: 'package'
 
-- task: CopyFiles@2
-  displayName: 'Copy JAR'
-  inputs:
-    SourceFolder: '$(system.defaultworkingdirectory)'
-    Contents: |
-      **/target/demo-0.0.1-SNAPSHOT.jar
-    TargetFolder: '$(build.artifactstagingdirectory)/target'
-    flattenFolders: true
+    - task: CopyFiles@2
+      displayName: 'Copy JAR'
+      inputs:
+        SourceFolder: '$(system.defaultworkingdirectory)'
+        Contents: |
+          **/target/demo-0.0.1-SNAPSHOT.jar
+        TargetFolder: '$(build.artifactstagingdirectory)/target'
+        flattenFolders: true
 
-- task: CopyFiles@2
-  displayName: 'Copy Contrast'
-  inputs:
-    SourceFolder: '$(system.defaultworkingdirectory)'
-    Contents: |
-      **/contrast/contrast.jar
-    TargetFolder: '$(build.artifactstagingdirectory)/contrast'
-    flattenFolders: true
+    - task: CopyFiles@2
+      displayName: 'Copy Contrast'
+      inputs:
+        SourceFolder: '$(system.defaultworkingdirectory)'
+        Contents: |
+          **/contrast/contrast.jar
+        TargetFolder: '$(build.artifactstagingdirectory)/contrast'
+        flattenFolders: true
 
-- task: Docker@2
-  displayName: 'Build Docker Image'
-  inputs:
-    command: build
-    # repository: your-docker-repo/your-image-name # Remove repository as we won't push
-    dockerfile: '**/Dockerfile' # Assuming your Dockerfile is in the root; adjust if needed
-    buildContext: '$(system.defaultworkingdirectory)'
-    tags: |
-      $(Build.BuildId)
-    arguments: |
-      --build-arg JAR_FILE=target/demo-0.0.1-SNAPSHOT.jar  
-      --build-arg CONTRAST_FILE=contrast/contrast.jar  
-- task: Bash@3
-  displayName: 'Run Docker Container and Execute Script'
-  inputs:
-    targetType: 'inline'
-    script: |
-        # Build the Docker image with context set to the project directory
-        docker build -t my-springboot-app:latest $(System.DefaultWorkingDirectory) 
-        docker run -d -p 8080:8080 --name SpringBoot my-springboot-app:latest
-        docker exec SpringBoot apk add --no-cache curl
-        sleep 30
-        # Execute the script inside the container
-        docker exec SpringBoot curl http://localhost:8080/?name=Shraddha
+    - task: Docker@2
+      displayName: 'Build Docker Image'
+      inputs:
+        command: build
+        # repository: your-docker-repo/your-image-name # Remove repository as we won't push
+        dockerfile: '**/Dockerfile' # Assuming your Dockerfile is in the root; adjust if needed
+        buildContext: '$(system.defaultworkingdirectory)'
+        tags: |
+          $(Build.BuildId)
+        arguments: |
+          --build-arg JAR_FILE=target/demo-0.0.1-SNAPSHOT.jar  
+          --build-arg CONTRAST_FILE=contrast/contrast.jar  
+    - task: Bash@3
+      displayName: 'Run Docker Container and Execute Script'
+      inputs:
+        targetType: 'inline'
+        script: |
+            # Build the Docker image with context set to the project directory
+            docker build -t my-springboot-app:latest $(System.DefaultWorkingDirectory) 
+            docker run -d -p 8080:8080 --name SpringBoot my-springboot-app:latest
+            docker exec SpringBoot apk add --no-cache curl
+            sleep 30
+            # Execute the script inside the container
+            docker exec SpringBoot curl http://localhost:8080/?name=Shraddha  
