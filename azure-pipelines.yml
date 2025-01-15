@@ -90,27 +90,27 @@ stages:
         LowLimit: '0'
         NoteLimit: '0'
         
-- stage: DeployToStaging
-  dependsOn: Verify
-  condition: succeeded('Verify')
-  jobs:
-  - deployment: DeployToStagingJob
-    environment: Staging # Target the Staging environment
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - script: echo "Deploying to Staging..."
-            # Add your Staging deployment steps here
+# - stage: DeployToStaging
+#   dependsOn: Verify
+#   condition: succeeded('Verify')
+#   jobs:
+#   - deployment: DeployToStagingJob
+#     environment: Staging # Target the Staging environment
+#     strategy:
+#       runOnce:
+#         deploy:
+#           steps:
+#           - script: echo "Deploying to Staging..."
+#             # Add your Staging deployment steps here
 
-- stage: DeployToProduction
-  dependsOn: DeployToStaging # Make Production deployment dependent on Staging
-  condition: succeeded('DeployToStaging') # Gate Production on Staging success
-  jobs:
-  - deployment: DeployToProductionJob
-    environment: Production # Target the Production environment
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - script: echo "Deploying to Production..."
+# - stage: DeployToProduction
+#   dependsOn: DeployToStaging # Make Production deployment dependent on Staging
+#   condition: succeeded('DeployToStaging') # Gate Production on Staging success
+#   jobs:
+#   - deployment: DeployToProductionJob
+#     environment: Production # Target the Production environment
+#     strategy:
+#       runOnce:
+#         deploy:
+#           steps:
+#           - script: echo "Deploying to Production..."
