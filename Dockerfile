@@ -5,7 +5,7 @@ ARG CONTRAST_CONFIG=contrast/contrast_security.yaml
 COPY ${JAR_FILE} app.jar
 COPY ${CONTRAST_FILE} /contrast/contrast.jar
 COPY ${CONTRAST_CONFIG} /contrast/contrast_security.yaml
-ENV JAVA_TOOL_OPTIONS -javaagent:/contrast/contrast.jar -Dcontrast.config.path=/contrast/contrast_security.yaml -Dcontrast.application.version=$(Build.BuildNumber)
+ENV JAVA_TOOL_OPTIONS -javaagent:/contrast/contrast.jar -Dcontrast.config.path=/contrast/contrast_security.yaml -Dcontrast.application.version=${RUN_ID}
 ENV CONTRAST__APPLICATION__NAME=SpringBoot
 ENV CONTRAST__SERVER__ENVIRONMENT=DEVELOPMENT
 ENV CONTRAST__PROTECT__ENABLE=false
