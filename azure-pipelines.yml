@@ -84,7 +84,7 @@ stages:
         ContrastService: 'sergei-apptwo'
         Application: '542c1a53-e2bb-4cb5-bdaa-5ae294f6c0ef'
         StatusFilter: 'Reported, Suspicious, Confirmed, NotAProblem, Remediated, AutoRemediated, Fixed'
-        AppVersionFilter: '1'
+        #AppVersionFilter: '1'
         CriticalLimit: '100'
         HighLimit: '100'
         MediumLimit: '100'
