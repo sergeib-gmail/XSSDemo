@@ -82,13 +82,13 @@ stages:
     - task: ContrastIntegration@2
       inputs:
         ContrastService: 'sergei-apptwo'
-        Application: '01969c44-82c2-467f-8dca-ba685bddb572'
+        Application: '542c1a53-e2bb-4cb5-bdaa-5ae294f6c0ef'
         StatusFilter: 'Reported, Suspicious, Confirmed, NotAProblem, Remediated, AutoRemediated, Fixed'
-        CriticalLimit: '100'
-        HighLimit: '100'
-        MediumLimit: '100'
-        LowLimit: '100'
-        NoteLimit: '100'
+        CriticalLimit: '1'
+        HighLimit: '1'
+        MediumLimit: '1'
+        LowLimit: '0'
+        NoteLimit: '0'
         
 # - stage: DeployToStaging
 #   dependsOn: Verify
