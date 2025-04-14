@@ -82,7 +82,7 @@ stages:
     - task: ContrastIntegration@2
       inputs:
         ContrastService: 'sergei-apptwo'
-        Application: '105820b9-7ee1-4094-85f2-d501bba89253'
+        Application: '01969c44-82c2-467f-8dca-ba685bddb572'
         StatusFilter: 'Reported, Suspicious, Confirmed, NotAProblem, Remediated, AutoRemediated, Fixed'
         CriticalLimit: '1'
         HighLimit: '1'
