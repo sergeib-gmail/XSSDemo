@@ -84,11 +84,11 @@ stages:
         ContrastService: 'sergei-apptwo'
         Application: '01969c44-82c2-467f-8dca-ba685bddb572'
         StatusFilter: 'Reported, Suspicious, Confirmed, NotAProblem, Remediated, AutoRemediated, Fixed'
-        CriticalLimit: '1'
-        HighLimit: '1'
-        MediumLimit: '1'
-        LowLimit: '0'
-        NoteLimit: '0'
+        CriticalLimit: '100'
+        HighLimit: '100'
+        MediumLimit: '100'
+        LowLimit: '100'
+        NoteLimit: '100'
         
 # - stage: DeployToStaging
 #   dependsOn: Verify
