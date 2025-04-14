@@ -1,8 +1,8 @@
 api: 
   url: https://apptwo.contrastsecurity.com/Contrast
   api_key: 6E6IRUQn6V12wbJ86SWQn8c4nue2QXz7
-  service_key: 9AVTVKEIVDZW6AQW
-  user_name: agent_6db250f7-bcb7-4ce6-9dd9-1173dd5f35c3@Teamserver2
+  service_key: M1D2QNV8MS2S1A2A
+  user_name: sergei.bulatov@contrastsecurity.com
 application:
   name: Sample
 server:
