@@ -81,7 +81,7 @@ stages:
     steps: 
     - task: ContrastIntegration@2
       inputs:
-        ContrastService: 'shraddha-apptwo'
+        ContrastService: 'sergei-apptwo'
         Application: '105820b9-7ee1-4094-85f2-d501bba89253'
         StatusFilter: 'Reported, Suspicious, Confirmed, NotAProblem, Remediated, AutoRemediated, Fixed'
         CriticalLimit: '1'
