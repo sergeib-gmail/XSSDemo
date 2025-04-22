@@ -61,7 +61,7 @@ stages:
         arguments: |
           --build-arg JAR_FILE=target/demo-0.0.1-SNAPSHOT.jar  
           --build-arg CONTRAST_FILE=contrast/contrast.jar
-          --build-arg RUN_ID=$(Date:yyyyMMdd).$(Rev:r)
+          --build-arg RUN_ID=echo $(Date:yyyyMMdd).$(Rev:r)
     - task: Bash@3
       displayName: 'Run Docker Container and Execute Script'
       inputs:
